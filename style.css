@@ -1,31 +1,102 @@
-body {
-  margin: 0;
-  font-family: sans-serif;
+
+/* Reset y básico */
+body, html {
+  margin: 0; padding: 0; height: 100%; overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+  background: black;
+  color: #0ff;
+  user-select: none;
+}
+
+/* Login */
+#login {
+  height: 100vh;
+  background: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+#login h1 {
+  font-size: 3rem;
+  text-shadow: 0 0 10px #0ff;
+}
+#login input {
+  font-size: 1.5rem;
+  padding: 10px;
+  background: #111;
+  border: 1px solid #0ff;
+  color: #0ff;
+  width: 250px;
+  text-align: center;
+  outline: none;
+}
+#login button {
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  background: #0ff;
+  border: none;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 15px #0ff;
+  transition: background 0.3s ease;
+}
+#login button:hover {
+  background: #0aa;
+}
+
+/* Matrix canvas */
+#matrix {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
 /* Escritorio */
 .desktop {
   height: 100vh;
-  background: linear-gradient(120deg, #0078d7, #00c6ff);
   padding: 20px;
+  position: relative;
+  background:
+    linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)),
+    url("img/fondo.png") no-repeat center center / cover;
+  filter: brightness(0.9);
+  z-index: 1;
+  user-select: none;
 }
 
+/* Iconos */
 .icon {
-  color: white;
-  margin-bottom: 15px;
+  color: #0ff;
   cursor: pointer;
+  margin: 10px;
+  font-size: 2rem;
+  display: inline-block;
+  text-shadow: 0 0 10px #0ff;
+  transition: color 0.3s ease;
+}
+.icon:hover {
+  color: #0aa;
 }
 
-/* Barra */
+/* Barra de tareas */
 .taskbar {
   position: fixed;
-  bottom: 0;
+  bottom: 0; left: 0;
   width: 100%;
-  background: #111;
-  color: white;
-  padding: 10px;
+  background: #001a1a;
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  font-size: 1.2rem;
+  color: #0ff;
+  box-shadow: 0 -2px 10px #0ff inset;
+  z-index: 3;
 }
 
 /* Menú inicio */
@@ -33,13 +104,21 @@ body {
   position: fixed;
   bottom: 50px;
   left: 10px;
-  background: #222;
-  color: white;
-  padding: 10px;
+  background: #002222dd;
+  border: 1px solid #0ff;
+  border-radius: 5px;
+  padding: 15px;
+  color: #0ff;
+  font-size: 1.1rem;
+  box-shadow: 0 0 15px #0ff;
+  z-index: 4;
 }
-
-.hidden {
-  display: none;
+.start p {
+  margin: 8px 0;
+  cursor: pointer;
+}
+.start p:hover {
+  color: #0aa;
 }
 
 /* Ventanas */
@@ -47,25 +126,111 @@ body {
   position: absolute;
   top: 100px;
   left: 100px;
-  width: 300px;
-  background: white;
-  border: 2px solid black;
+  width: 400px;
+  background: #002222cc;
+  border: 2px solid #0ff;
+  color: #0ff;
+  box-shadow: 0 0 15px #0ff;
+  user-select: text;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
 }
 
 .titlebar {
-  background: #0078d7;
-  color: white;
-  padding: 5px;
+  background: #005555;
+  padding: 5px 10px;
+  cursor: move;
+  color: #0ff;
+  font-weight: bold;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  user-select: none;
+}
+
+.titlebar button {
+  background: #0ff;
+  border: none;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 2px 8px;
+  border-radius: 3px;
+  box-shadow: 0 0 8px #0ff;
+  transition: background 0.3s ease;
+}
+.titlebar button:hover {
+  background: #0aa;
 }
 
 textarea {
-  width: 100%;
-  height: 200px;
+  flex: 1;
+  margin: 10px;
+  padding: 10px;
+  background: #000;
+  border: 1px solid #0ff;
+  color: #0ff;
+  font-family: monospace;
+  resize: none;
+}
+
+input#https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27, input#cmd {
+  margin: 10px;
+  padding: 8px;
+  background: #000;
+  border: 1px solid #0ff;
+  color: #0ff;
+  font-family: monospace;
+  outline: none;
+}
+
+#fileList {
+  margin: 10px;
+  overflow-y: auto;
+  max-height: 200px;
+}
+
+#fileList p {
+  cursor: pointer;
+  padding: 5px;
+  border-bottom: 1px solid #0ff;
+  transition: background 0.3s ease;
+}
+
+#fileList p:hover {
+  background: #003333;
 }
 
 iframe {
-  width: 100%;
-  height: 200px;
+  flex: 1;
+  border: none;
+  margin: 10px;
+  background: black;
+}
+
+/* Terminal */
+#term {
+  flex: 1;
+  margin: 10px;
+  background: black;
+  color: #0f0;
+  overflow-y: auto;
+  padding: 10px;
+  font-family: monospace;
+  font-size: 1rem;
+}
+
+/* Glitch efecto */
+.glitch {
+  animation: glitch 0.3s infinite;
+}
+
+@keyframes glitch {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px,2px); }
+  40% { transform: translate(-2px,-2px); }
+  60% { transform: translate(2px,2px); }
+  80% { transform: translate(2px,-2px); }
+  100% { transform: translate(0); }
 }
