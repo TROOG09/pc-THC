@@ -1,0 +1,71 @@
+body {
+  margin: 0;
+  font-family: sans-serif;
+}
+
+/* Escritorio */
+.desktop {
+  height: 100vh;
+  background: linear-gradient(120deg, #0078d7, #00c6ff);
+  padding: 20px;
+}
+
+.icon {
+  color: white;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+/* Barra */
+.taskbar {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #111;
+  color: white;
+  padding: 10px;
+  display: flex;
+  gap: 10px;
+}
+
+/* Menú inicio */
+.start {
+  position: fixed;
+  bottom: 50px;
+  left: 10px;
+  background: #222;
+  color: white;
+  padding: 10px;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Ventanas */
+.window {
+  position: absolute;
+  top: 100px;
+  left: 100px;
+  width: 300px;
+  background: white;
+  border: 2px solid black;
+}
+
+.titlebar {
+  background: #0078d7;
+  color: white;
+  padding: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+}
+
+iframe {
+  width: 100%;
+  height: 200px;
+}
