@@ -1,45 +1,78 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>TheSixClowns OS</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>TheSixClowns OS - Cyberpunk</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-<!-- Escritorio -->
-<div class="desktop">
-  <div class="icon" onclick="openApp('notepad')">📄 Notas</div>
-  <div class="icon" onclick="openApp('browser')">🌐 Internet</div>
+<!-- LOGIN -->
+<div id="login" class="login-screen">
+  <h1>TheSixClowns OS</h1>
+  <input id="user" placeholder="Usuario" autocomplete="off" />
+  <button onclick="login()">Entrar</button>
 </div>
 
-<!-- Barra de tareas -->
-<div class="taskbar">
-  <button onclick="toggleStart()">☰</button>
-  <span>TheSixClowns OS</span>
-</div>
+<!-- SISTEMA -->
+<div id="os" class="hidden">
 
-<!-- Menú inicio -->
-<div id="startMenu" class="start hidden">
-  <p onclick="openApp('notepad')">📄 Bloc de notas</p>
-  <p onclick="openApp('browser')">🌐 Navegador</p>
-</div>
+  <canvas id="matrix"></canvas>
 
-<!-- Ventanas -->
-<div id="notepad" class="window hidden">
-  <div class="titlebar">
-    Bloc de notas
-    <button onclick="closeApp('notepad')">X</button>
+  <div class="desktop">
+    <div class="icon" onclick="openApp('notepad')">📄 Notas</div>
+    <div class="icon" onclick="openApp('files')">📁 Archivos</div>
+    <div class="icon" onclick="openApp('browser')">🌐 Web</div>
+    <div class="icon" onclick="openApp('terminal')">💻 Terminal</div>
   </div>
-  <textarea placeholder="Escribe aquí..."></textarea>
-</div>
 
-<div id="browser" class="window hidden">
-  <div class="titlebar">
-    Navegador
-    <button onclick="closeApp('browser')">X</button>
+  <div class="taskbar">
+    <button onclick="toggleStart()">☰</button>
+    <span id="clock"></span>
   </div>
-  <iframe src="https://example.com"></iframe>
+
+  <div id="startMenu" class="start hidden">
+    <p onclick="openApp('notepad')">Notas</p>
+    <p onclick="openApp('files')">Archivos</p>
+    <p onclick="openApp('browser')">Navegador</p>
+    <p onclick="openApp('terminal')">Terminal</p>
+  </div>
+
+  <!-- NOTEPAD -->
+  <div id="notepad" class="window hidden">
+    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
+      Notepad <button onclick="closeApp('notepad')">X</button>
+    </div>
+    <textarea id="noteArea"></textarea>
+    <button onclick="saveFile()">Guardar</button>
+  </div>
+
+  <!-- FILES -->
+  <div id="files" class="window hidden">
+    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
+      Archivos <button onclick="closeApp('files')">X</button>
+    </div>
+    <div id="fileList"></div>
+  </div>
+
+  <!-- BROWSER -->
+  <div id="browser" class="window hidden">
+    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
+      Navegador <button onclick="closeApp('browser')">X</button>
+    </div>
+    <input id="url" placeholder="https://..." onkeydown="loadPage(event)" autocomplete="off" />
+    <iframe id="frame"></iframe>
+  </div>
+
+  <!-- TERMINAL -->
+  <div id="terminal" class="window hidden">
+    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
+      Terminal <button onclick="closeApp('terminal')">X</button>
+    </div>
+    <div id="term"></div>
+    <input id="cmd" onkeydown="runCmd(event)" autocomplete="off" />
+  </div>
+
 </div>
 
 <script src="script.js"></script>
