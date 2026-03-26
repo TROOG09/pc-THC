@@ -1,80 +1,180 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <title>TheSixClowns OS - Cyberpunk</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Windows Personalizado</title>
+    <style>
+        :root {
+            --primary-bg: url('https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27');
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body, html { height: 100%; overflow: hidden; background: #000; }
+
+        /* 1. PANTALLA DE CARGA (BOOT) */
+        #boot-screen {
+            position: fixed; width: 100%; height: 100%; background: #000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 1000; transition: opacity 1s ease;
+        }
+
+        .logo-boot { width: 150px; height: 150px; border-radius: 20px; margin-bottom: 50px; }
+
+        .loader {
+            width: 40px; height: 40px; border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db; border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* 2. PANTALLA DE LOGIN */
+        #login-screen {
+            position: fixed; width: 100%; height: 100%; 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), var(--primary-bg);
+            background-size: cover; background-position: center;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 900;
+        }
+
+        .login-box {
+            background: var(--glass); backdrop-filter: blur(15px);
+            padding: 40px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+            text-align: center; color: white; box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .user-avatar { width: 100px; height: 100px; border-radius: 50%; border: 3px solid white; margin-bottom: 20px; }
+
+        input {
+            width: 100%; padding: 10px; margin: 15px 0; border: none; border-radius: 5px;
+            background: rgba(255,255,255,0.9); outline: none;
+        }
+
+        button {
+            padding: 10px 25px; border: none; border-radius: 5px; background: #0078d4;
+            color: white; cursor: pointer; transition: 0.3s;
+        }
+
+        button:hover { background: #005a9e; }
+
+        /* 3. ESCRITORIO */
+        #desktop {
+            width: 100%; height: 100vh;
+            background: var(--primary-bg); background-size: cover; background-position: center;
+            display: none;
+        }
+
+        /* NAVEGADOR (VENTANA) */
+        #browser-window {
+            position: absolute; top: 50px; left: 50px; width: 80%; height: 80%;
+            background: white; border-radius: 8px; display: none;
+            flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); overflow: hidden;
+        }
+
+        .window-header {
+            background: #f3f3f3; padding: 10px; display: flex; align-items: center; gap: 10px;
+            border-bottom: 1px solid #ccc;
+        }
+
+        .url-bar { flex-grow: 1; padding: 5px 10px; border: 1px solid #ccc; border-radius: 4px; }
+
+        .close-btn { background: #ff5f56; width: 15px; height: 15px; border-radius: 50%; cursor: pointer; }
+
+        iframe { border: none; flex-grow: 1; width: 100%; height: 100%; }
+
+        /* BARRA DE TAREAS */
+        #taskbar {
+            position: fixed; bottom: 0; width: 100%; height: 45px;
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(10px);
+            display: flex; align-items: center; padding: 0 10px; z-index: 1000;
+        }
+
+        .start-btn { width: 35px; height: 35px; cursor: pointer; border-radius: 5px; }
+        .start-btn:hover { background: rgba(255,255,255,0.2); }
+    </style>
 </head>
 <body>
 
-<!-- LOGIN -->
-<div id="login" class="login-screen">
-  <h1>TheSixClowns OS</h1>
-  <input id="user" placeholder="Usuario" autocomplete="off" />
-  <button onclick="login()">Entrar</button>
-</div>
-
-<!-- SISTEMA -->
-<div id="os" class="hidden">
-
-  <canvas id="matrix"></canvas>
-
-  <div class="desktop">
-    <div class="icon" onclick="openApp('notepad')">📄 Notas</div>
-    <div class="icon" onclick="openApp('files')">📁 Archivos</div>
-    <div class="icon" onclick="openApp('browser')">🌐 Web</div>
-    <div class="icon" onclick="openApp('terminal')">💻 Terminal</div>
-  </div>
-
-  <div class="taskbar">
-    <button onclick="toggleStart()">☰</button>
-    <span id="clock"></span>
-  </div>
-
-  <div id="startMenu" class="start hidden">
-    <p onclick="openApp('notepad')">Notas</p>
-    <p onclick="openApp('files')">Archivos</p>
-    <p onclick="openApp('browser')">Navegador</p>
-    <p onclick="openApp('terminal')">Terminal</p>
-  </div>
-
-  <!-- NOTEPAD -->
-  <div id="notepad" class="window hidden">
-    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
-      Notepad <button onclick="closeApp('notepad')">X</button>
+    <div id="boot-screen">
+        <img src="https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27" class="logo-boot">
+        <div class="loader"></div>
     </div>
-    <textarea id="noteArea"></textarea>
-    <button onclick="saveFile()">Guardar</button>
-  </div>
 
-  <!-- FILES -->
-  <div id="files" class="window hidden">
-    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
-      Archivos <button onclick="closeApp('files')">X</button>
+    <div id="login-screen">
+        <div class="login-box">
+            <img src="https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27" class="user-avatar">
+            <h2>Bienvenido</h2>
+            <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="off">
+            <button onclick="iniciarSesion()">Iniciar Sesión</button>
+        </div>
     </div>
-    <div id="fileList"></div>
-  </div>
 
-  <!-- BROWSER -->
-  <div id="browser" class="window hidden">
-    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
-      Navegador <button onclick="closeApp('browser')">X</button>
+    <div id="desktop">
+        <div onclick="toggleBrowser()" style="width: 80px; text-align: center; padding: 15px; cursor: pointer; color: white;">
+            <img src="https://cdn-icons-png.flaticon.com/512/888/888846.png" style="width: 50px;">
+            <p>Internet</p>
+        </div>
+
+        <div id="browser-window">
+            <div class="window-header">
+                <div class="close-btn" onclick="toggleBrowser()"></div>
+                <input type="text" id="url-input" class="url-bar" value="https://www.bing.com" placeholder="Escribe una URL y presiona Enter">
+                <button onclick="irALaWeb()">Ir</button>
+            </div>
+            <iframe id="browser-frame" src="https://www.bing.com"></iframe>
+        </div>
+
+        <div id="taskbar">
+            <img src="https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27" class="start-btn">
+        </div>
     </div>
-    <input id="url" placeholder="https://..." onkeydown="loadPage(event)" autocomplete="off" />
-    <iframe id="frame"></iframe>
-  </div>
 
-  <!-- TERMINAL -->
-  <div id="terminal" class="window hidden">
-    <div class="titlebar" onmousedown="dragStart(event,this.parentElement)">
-      Terminal <button onclick="closeApp('terminal')">X</button>
-    </div>
-    <div id="term"></div>
-    <input id="cmd" onkeydown="runCmd(event)" autocomplete="off" />
-  </div>
+    <script>
+        // Simulamos la carga inicial (Boot)
+        window.onload = () => {
+            setTimeout(() => {
+                document.getElementById('boot-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('boot-screen').style.display = 'none';
+                    document.getElementById('login-screen').style.display = 'flex';
+                }, 1000);
+            }, 3000); // 3 segundos de carga
+        };
 
-</div>
+        // Función para entrar al escritorio
+        function iniciarSesion() {
+            const user = document.getElementById('username').value;
+            if(user.trim() !== "") {
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('desktop').style.display = 'block';
+                console.log("Sesión iniciada por: " + user);
+            } else {
+                alert("Por favor, introduce un nombre.");
+            }
+        }
 
-<script src="script.js"></script>
+        // Función para abrir/cerrar navegador
+        function toggleBrowser() {
+            const win = document.getElementById('browser-window');
+            win.style.display = (win.style.display === 'flex') ? 'none' : 'flex';
+        }
+
+        // Función para cargar webs en el iframe
+        function irALaWeb() {
+            let url = document.getElementById('url-input').value;
+            if (!url.startsWith('http')) {
+                url = 'https://' + url;
+            }
+            document.getElementById('browser-frame').src = url;
+        }
+
+        // Hacer que funcione al presionar Enter en el navegador
+        document.getElementById('url-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') irALaWeb();
+        });
+    </script>
 </body>
 </html>
