@@ -2,73 +2,43 @@
     --primary-bg: url('https://cdn.discordapp.com/attachments/1474911562828615885/1486504857526337746/Picsart_26-03-24_23-57-43-972.jpg?ex=69c5bf07&is=69c46d87&hm=24bc00bfada867beb0781cffb137d326be57c3c317b0ecc4abcc00c9be02fb27');
 }
 
-/* Contenedor de la ventana del navegador */
+/* Pantalla de carga negra */
+#boot-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #000; z-index: 1000; display: flex;
+    flex-direction: column; align-items: center; justify-content: center;
+    transition: opacity 1s ease;
+}
+
+/* Ventana del Navegador Estilo Windows */
 #browser-window {
-    position: absolute;
-    top: 50px;
-    left: 50px;
-    width: 85%;
-    height: 80%;
-    background: #fff;
-    border-radius: 8px;
-    display: none; /* Se activa con JS */
-    flex-direction: column;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    z-index: 100;
+    position: absolute; top: 50px; left: 50px; width: 85%; height: 80%;
+    background: #fff; border-radius: 8px; display: none; /* Se activa con el login */
+    flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    z-index: 100; overflow: hidden; border: 1px solid #444;
 }
 
 .browser-toolbar {
-    background: #f1f1f1;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-bottom: 1px solid #ccc;
+    background: #f1f1f1; padding: 10px; display: flex;
+    align-items: center; gap: 10px; border-bottom: 1px solid #ccc;
 }
 
 .url-bar {
-    flex-grow: 1;
-    padding: 6px 15px;
-    border: 1px solid #ccc;
-    border-radius: 20px;
-    outline: none;
+    flex-grow: 1; padding: 6px 15px; border: 1px solid #bbb;
+    border-radius: 20px; outline: none; font-size: 14px;
 }
 
+.url-bar:focus { border-color: #0078d4; background: #fff; }
+
+iframe {
+    flex-grow: 1; border: none; width: 100%; height: 100%;
+    background: white;
+}
+
+/* Botones de la ventana */
 .nav-btn {
-    cursor: pointer;
-    border: none;
-    background: #e0e0e0;
-    padding: 5px 10px;
-    border-radius: 4px;
+    background: #e0e0e0; border: none; padding: 5px 12px;
+    border-radius: 4px; cursor: pointer; font-weight: bold;
 }
-
 .nav-btn:hover { background: #d0d0d0; }
-
-iframe {
-    flex-grow: 1;
-    border: none;
-    background: white;
-}
-
-#browser-window {
-    display: none;
-    flex-direction: column;
-    position: absolute;
-    top: 10%;
-    left: 5%;
-    width: 90%;
-    height: 80%;
-    background: white;
-    border: 1px solid #333;
-    border-radius: 8px;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.7);
-    z-index: 500;
-    overflow: hidden;
-}
-
-iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    background: #fff;
-}
+.close-btn { background: #ff5f56; color: white; }
